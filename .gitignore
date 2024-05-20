@@ -1,0 +1,6 @@
+node_modules
+.DS_STORE
+backend/*.sqlite
+backend/testreport.html
+backend/lintreport.html
+backend/vendor/

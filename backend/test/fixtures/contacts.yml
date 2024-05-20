@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+jan:
+  shortname: jja01
+  fullname: Jan Jansen
+  email: j.jansen@test.saxion.nl
+
+peter:
+  shortname: ppe01
+  fullname: Peter Peters
+  email: p.peters@test.saxion.nl

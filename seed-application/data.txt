@@ -1,0 +1,50 @@
+person[
+  name{"Ivo van Hurne"}
+  email{"i.vanhurne@saxion.nl"}
+  code{"ihu03"}
+]
+person[
+  name{"Evert Duipmans"}
+  email{"e.f.duipmans@saxion.nl"}
+  code{"edu01"}
+]
+person[
+  name{"Rogier Hommels"}
+  email{"r.m.hommels@saxion.nl"}
+  code{"rho13"}
+]
+person[
+  name{"Gerralt Gottemaker"}
+  email{"g.j.a.g.gottemaker@saxion.nl"}
+  code{"ggo01"}
+]
+person[
+  name{"Anthony van den Berg"}
+  email{"a.r.vandenberg@saxion.nl"}
+  code{"abe23"}
+]
+person[
+  name{"Tristan Pothoven"}
+  email{"t.pothoven@saxion.nl"}
+  code{"tpo01"}
+]
+person[
+  name{"Paul de Groot"}
+  email{"p.degroot@saxion.nl"}
+  code{"pgr09"}
+]
+person[
+  name{"Kevin Wilmink"}
+  email{"k.h.s.wilmink@saxion.nl"}
+  code{"kwi05"}
+]
+person[
+  name{"Danique Hofstee"}
+  email{"d.hofstee@saxion.nl"}
+  code{"dho11"}
+]
+person[
+  name{"Craig Bradley"}
+  email{"c.a.bradley@saxion.nl"}
+  code{"cbr23"}
+]
