@@ -16,7 +16,7 @@ fullnames=()
 emails=()
 shortnames=()
 
-# chec if database is full
+# check if database is full
 if [ "$(curl -s $endpoint)" == "[]" ]; then
   echo "Database is empty. Adding data..."
 else
