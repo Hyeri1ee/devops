@@ -1,0 +1,44 @@
+stages:
+  - lint
+  - test
+
+before_script:
+  - npm install
+
+lint-frontend:
+  stage: lint
+  script:
+    - cd ./frontend
+    - mkdir -p frontend-lint-report
+    - npm run lint > ./frontend-lint-report/lint-report.txt
+  artifacts:
+    reports:
+      frontend-lint: frontend-lint-report/lint-report.txt
+    expire_in: 1 month
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
+
+lint-backend:
+  stage: lint
+  script:
+    - cd ./backend
+    - mkdir -p backend-lint-report
+    - npm run lint > backend-lint-report/lint-report.txt
+  artifacts:
+    reports:
+      backend-lint: backend-lint-report/lint-report.txt
+    expire_in: 1 month
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
+
+unit-tests:
+  stage: test
+  script:
+    - cd ./backend
+    - npm run test
+  artifacts:
+    reports:
+      unit-test-report: ./backend/test/controllers/contacts_controller_test.rb
+    expire_in: 1 month
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
