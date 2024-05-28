@@ -21,7 +21,7 @@ if [ "$(curl -s $endpoint)" == "[]" ]; then
   echo "Database is empty. Adding data..."
 else
   echo "Database is not empty. Exiting script."
-  exit 1
+  exit 0
 fi
 
 while IFS='' read -r line || [[ -n "$line" ]]; do
