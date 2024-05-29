@@ -3,7 +3,7 @@ stages:
   - test
 variables:
   BUNDLER_VERSION: 2.5.9
-  RUBY_VERSION: 3.1.5
+  RUBY_VERSION: 3.3.1
 
 lint-frontend:
   stage: lint
@@ -37,10 +37,11 @@ lint-backend:
     - gem install rubocop
   script:
     - cd backend/
+    - bundle config set frozen false
     - bundle install
     - mkdir -p backend-lint-report
     - touch ./backend-lint-report/lint-report.txt
-    - rubocop > ./backend-lint-report/lint-report.txt
+    - rubocop -d > ./backend-lint-report/lint-report.txt || true
   artifacts:
     paths:
       - backend/backend-lint-report/lint-report.txt

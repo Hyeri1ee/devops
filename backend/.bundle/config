@@ -2,3 +2,4 @@
 BUNDLE_PATH: "vendor/bundle"
 BUNDLE_WITHOUT: "development:test:rmagick"
 BUNDLE_DEPLOYMENT: "true"
+BUNDLE_FROZEN: "false"
