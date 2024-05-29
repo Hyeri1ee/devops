@@ -30,7 +30,7 @@ lint-backend:
     - touch ./backend-lint-report/lint-report.txt
     - rubocop --format txt --out ./backend-lint-report/lint-report.txt
   artifacts:
-      path:
+      paths:
         - backend/backend-lint-report/lint-report.txt
       expire_in: 1 month
   rules:
@@ -43,7 +43,7 @@ unit-tests:
     - cd backend/
     - ./bin/rails test
   artifacts:
-      path:
+      paths:
         - backend/test/controllers/contacts_controller_test.rb
       expire_in: 1 month
   rules:
