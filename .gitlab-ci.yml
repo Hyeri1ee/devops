@@ -25,7 +25,7 @@ lint-backend:
     - gem install rubocop
   script:
     - cd backend/
-    - bundle install
+    - bundle install --version 3.3.1
     - mkdir -p backend-lint-report
     - touch ./backend-lint-report/lint-report.txt
     - rubocop --format txt --out ./backend-lint-report/lint-report.txt
