@@ -33,3 +33,12 @@ it just exits itself.
 ## point4
 - stages : lint, test
 - job1 : lint-frontend
+  - installed npm and made new file (txt) and wrote the result there
+- job2 : lint-backend
+  - installed ruby and gem and matched their versions as same
+  - and wrote the result in new file (txt)
+- job3 : unit-test
+  - tried setting .env 'MINITEST_REPORTER=HtmlReporter' but it keeps saying error like this
+    - ➜  backend git:(main) ✗ ./bin/rails test
+      /home/hyeri/.rbenv/versions/3.3.1/lib/ruby/3.3.0/bundled_gems.rb:74:in `require': cannot load such file -- minitest/reporters (LoadError)
+  
