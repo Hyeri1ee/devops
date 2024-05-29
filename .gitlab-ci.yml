@@ -23,11 +23,11 @@ lint-frontend:
 lint-backend:
   stage: lint
   before_script:
-    - gem install bundler -v 3.3.1
+    - gem install bundler
     - gem install rubocop
   script:
     - cd backend/
-    - bundle _3.3.1_ install
+    - bundle install
     - mkdir -p backend-lint-report
     - touch ./backend-lint-report/lint-report.txt
     - rubocop --format txt --out ./backend-lint-report/lint-report.txt
