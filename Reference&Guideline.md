@@ -33,4 +33,3 @@ it just exits itself.
 ## point4
 - stages : lint, test
 - job1 : lint-frontend
-  - 

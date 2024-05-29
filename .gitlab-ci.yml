@@ -39,7 +39,7 @@ unit-tests:
   stage: test
   script:
     - cd ./backend
-    - npm run test
+    - ./bin/rails test
   artifacts:
     reports:
       unit-test-report: ./backend/test/controllers/contacts_controller_test.rb
