@@ -40,7 +40,7 @@ lint-backend:
     - bundle install
     - mkdir -p backend-lint-report
     - touch ./backend-lint-report/lint-report.txt
-    - rubocop --format txt --out ./backend-lint-report/lint-report.txt
+    - rubocop > ./backend-lint-report/lint-report.txt
   artifacts:
     paths:
       - backend/backend-lint-report/lint-report.txt
