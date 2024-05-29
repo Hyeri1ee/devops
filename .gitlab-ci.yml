@@ -1,9 +1,23 @@
 stages:
   - lint
   - test
+
 variables:
   BUNDLER_VERSION: 2.5.9
   RUBY_VERSION: 3.3.1
+
+# Common setup for backend jobs
+.setup-backend: &setup-backend
+  before_script:
+    - apt-get update -qq && apt-get install -y curl gnupg
+    - curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+    - curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
+    - curl -sSL https://get.rvm.io | bash -s stable
+    - source /etc/profile.d/rvm.sh
+    - rvm install $RUBY_VERSION
+    - rvm use $RUBY_VERSION --default
+    - gem install bundler -v $BUNDLER_VERSION
+    - gem install rubocop
 
 lint-frontend:
   stage: lint
@@ -25,16 +39,7 @@ lint-frontend:
 
 lint-backend:
   stage: lint
-  before_script:
-    - apt-get update -qq && apt-get install -y curl gnupg
-    - curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-    - curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
-    - curl -sSL https://get.rvm.io | bash -s stable
-    - source /etc/profile.d/rvm.sh
-    - rvm install $RUBY_VERSION
-    - rvm use $RUBY_VERSION --default
-    - gem install bundler -v $BUNDLER_VERSION
-    - gem install rubocop
+  extends: .setup-backend
   script:
     - cd backend/
     - bundle config set frozen false
@@ -49,12 +54,14 @@ lint-backend:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
 
-
 unit-tests:
   stage: test
+  extends: .setup-backend
   script:
     - cd backend/
-    - ./bin/rails test
+    - bundle config set frozen false
+    - bundle install
+    - ./bin/rails test > ./backend/test/controllers/contacts_controller_test.rb
   artifacts:
     paths:
       - backend/test/controllers/contacts_controller_test.rb
