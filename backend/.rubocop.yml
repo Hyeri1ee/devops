@@ -3,5 +3,6 @@ AllCops:
   Exclude:
     - 'bin/bundle'
   NewCops: disable
+  
 Style/Documentation:
   Enabled: false
