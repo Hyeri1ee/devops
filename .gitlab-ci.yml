@@ -9,7 +9,7 @@ lint-frontend:
     - npm install
     - npm i -D eslint
   script:
-    - cd frontend/
+    - cd /builds/saxion.nl/hbo-ict/2.3-devops/2023-2024/exam-retake/03/frontend/
     - mkdir -p frontend-lint-report
     - touch ./frontend-lint-report/lint-report.txt
     - npm run lint > ./frontend-lint-report/lint-report.txt
@@ -26,7 +26,7 @@ lint-backend:
     - gem install rubocop
   script:
     - cd backend/
-    - bundle install --version 3.3.1
+    - bundle _3.3.1_ install
     - mkdir -p backend-lint-report
     - touch ./backend-lint-report/lint-report.txt
     - rubocop --format txt --out ./backend-lint-report/lint-report.txt
