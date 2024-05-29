@@ -35,7 +35,7 @@ lint-frontend:
       - frontend/frontend-lint-report/lint-report.txt
     expire_in: 1 month
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
 
 lint-backend:
   stage: lint
@@ -52,7 +52,7 @@ lint-backend:
       - backend/backend-lint-report/lint-report.txt
     expire_in: 1 month
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
 
 unit-tests:
   stage: test
@@ -61,10 +61,12 @@ unit-tests:
     - cd backend/
     - bundle config set frozen false
     - bundle install
-    - ./bin/rails test > ./backend/test/controllers/contacts_controller_test.rb
+    - gem install minitest-reporters
+    - export MINITEST_REPORTER=HtmlReporter
+    - ./bin/rails test
   artifacts:
     paths:
-      - backend/test/controllers/contacts_controller_test.rb
+      - ./backend/test/**/*.html
     expire_in: 1 month
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
