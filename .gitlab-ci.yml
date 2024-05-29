@@ -6,10 +6,10 @@ lint-frontend:
   stage: lint
   before_script:
     - apt-get update -qq && apt-get install -y nodejs npm
+    - cd frontend/
     - npm install
     - npm i -D eslint
   script:
-    - cd /builds/saxion.nl/hbo-ict/2.3-devops/2023-2024/exam-retake/03/frontend/
     - mkdir -p frontend-lint-report
     - touch ./frontend-lint-report/lint-report.txt
     - npm run lint > ./frontend-lint-report/lint-report.txt
