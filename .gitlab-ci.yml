@@ -23,6 +23,7 @@ lint-frontend:
 lint-backend:
   stage: lint
   before_script:
+    - gem install bundler -v 3.3.1
     - gem install rubocop
   script:
     - cd backend/
