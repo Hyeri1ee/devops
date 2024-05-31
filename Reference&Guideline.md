@@ -42,3 +42,7 @@ it just exits itself.
     - ➜  backend git:(main) ✗ ./bin/rails test
       /home/hyeri/.rbenv/versions/3.3.1/lib/ruby/3.3.0/bundled_gems.rb:74:in `require': cannot load such file -- minitest/reporters (LoadError)
   
+## point5 
+- made terraform file
+- 1 vpc, 4 subnets(2 - web, 2 - was), 4 instances
+- user_data.sh uses docker-compose up to run the front and backend
