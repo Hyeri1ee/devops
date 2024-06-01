@@ -45,4 +45,4 @@ it just exits itself.
 ## point5 
 - made terraform file
 - 1 vpc, 4 subnets(2 - web, 2 - was), 4 instances
-- user_data.sh uses docker-compose up to run the front and backend
+- user_data.sh : docker-compose up to run the front and backend
