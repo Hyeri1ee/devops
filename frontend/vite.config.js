@@ -20,7 +20,7 @@ export default defineConfig({
       },
     }),
   ],
-  define: { 'process.env': {} },
+  define: { 'process.env': {VITE_REST_API: process.env.VITE_REST_API} },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
