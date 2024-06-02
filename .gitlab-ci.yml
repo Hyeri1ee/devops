@@ -1,0 +1,72 @@
+stages:
+  - lint
+  - test
+
+variables:
+  BUNDLER_VERSION: 2.5.9
+  RUBY_VERSION: 3.3.1
+
+# Common setup for backend jobs
+.setup-backend: &setup-backend
+  before_script:
+    - apt-get update -qq && apt-get install -y curl gnupg
+    - curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+    - curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
+    - curl -sSL https://get.rvm.io | bash -s stable
+    - source /etc/profile.d/rvm.sh
+    - rvm install $RUBY_VERSION
+    - rvm use $RUBY_VERSION --default
+    - gem install bundler -v $BUNDLER_VERSION
+    - gem install rubocop
+
+lint-frontend:
+  stage: lint
+  before_script:
+    - apt-get update -qq && apt-get install -y nodejs npm
+    - cd frontend/
+    - npm install
+    - npm i -D eslint
+  script:
+    - mkdir -p frontend-lint-report
+    - touch ./frontend-lint-report/lint-report.txt
+    - npm run lint > ./frontend-lint-report/lint-report.txt
+  artifacts:
+    paths:
+      - frontend/frontend-lint-report/lint-report.txt
+    expire_in: 1 month
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
+
+lint-backend:
+  stage: lint
+  extends: .setup-backend
+  script:
+    - cd backend/
+    - bundle config set frozen false
+    - bundle install
+    - mkdir -p backend-lint-report
+    - touch ./backend-lint-report/lint-report.txt
+    - rubocop -d > ./backend-lint-report/lint-report.txt || true
+  artifacts:
+    paths:
+      - backend/backend-lint-report/lint-report.txt
+    expire_in: 1 month
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
+
+unit-tests:
+  stage: test
+  extends: .setup-backend
+  script:
+    - cd backend/
+    - bundle config set frozen false
+    - bundle install
+    - gem install minitest-reporters
+    - export MINITEST_REPORTER=HtmlReporter
+    - ./bin/rails test
+  artifacts:
+    paths:
+      - ./backend/test/**/*.html
+    expire_in: 1 month
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
