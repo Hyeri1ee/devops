@@ -8,6 +8,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 sudo systemctl start docker
 sudo systemctl enable docker
-git clone -b point3 --single-branch https://FKryleckiSE:glpat-Qj-yoJjFz_hUKKZ_Sek_@gitlab.com/saxion.nl/hbo-ict/2.3-devops/2023-2024/exam-retake/03.git
+git clone -b point7 --single-branch https://FKryleckiSE:glpat-Qj-yoJjFz_hUKKZ_Sek_@gitlab.com/saxion.nl/hbo-ict/2.3-devops/2023-2024/exam-retake/03.git
 cd 03
 sudo docker-compose up -d
