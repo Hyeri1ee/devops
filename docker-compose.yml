@@ -37,7 +37,7 @@ services:
     depends_on:
       - mysql
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://${INSTANCE_IP}:3000/contacts"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/contacts"]
       interval: 10s
       timeout: 5s
       retries: 5
