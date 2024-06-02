@@ -1,72 +1,67 @@
 stages:
   - lint
   - test
+  - build
+  - deploy
 
 variables:
-  BUNDLER_VERSION: 2.5.9
-  RUBY_VERSION: 3.3.1
+  RAILS_ENV: test
 
-# Common setup for backend jobs
-.setup-backend: &setup-backend
-  before_script:
-    - apt-get update -qq && apt-get install -y curl gnupg
-    - curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-    - curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
-    - curl -sSL https://get.rvm.io | bash -s stable
-    - source /etc/profile.d/rvm.sh
-    - rvm install $RUBY_VERSION
-    - rvm use $RUBY_VERSION --default
-    - gem install bundler -v $BUNDLER_VERSION
+lint_backend:
+  stage: lint
+  script:
     - gem install rubocop
+    - rubocop
+  artifacts:
+    paths:
+      - backend_lint_report.html
+    expire_in: 1 month
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
 
-lint-frontend:
+lint_frontend:
   stage: lint
-  before_script:
-    - apt-get update -qq && apt-get install -y nodejs npm
-    - cd frontend/
+  script:
     - npm install
-    - npm i -D eslint
-  script:
-    - mkdir -p frontend-lint-report
-    - touch ./frontend-lint-report/lint-report.txt
-    - npm run lint > ./frontend-lint-report/lint-report.txt
+    - npm run lint
   artifacts:
     paths:
-      - frontend/frontend-lint-report/lint-report.txt
+      - frontend_lint_report.html
     expire_in: 1 month
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
+    - if: '$CI_COMMIT_BRANCH'
 
-lint-backend:
-  stage: lint
-  extends: .setup-backend
-  script:
-    - cd backend/
-    - bundle config set frozen false
-    - bundle install
-    - mkdir -p backend-lint-report
-    - touch ./backend-lint-report/lint-report.txt
-    - rubocop -d > ./backend-lint-report/lint-report.txt || true
-  artifacts:
-    paths:
-      - backend/backend-lint-report/lint-report.txt
-    expire_in: 1 month
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
-
-unit-tests:
+test_backend:
   stage: test
-  extends: .setup-backend
   script:
-    - cd backend/
-    - bundle config set frozen false
     - bundle install
-    - gem install minitest-reporters
-    - export MINITEST_REPORTER=HtmlReporter
-    - ./bin/rails test
+    - bundle exec rake db:create RAILS_ENV=test
+    - bundle exec rake db:migrate RAILS_ENV=test
+    - bundle exec rails test
   artifacts:
     paths:
-      - ./backend/test/**/*.html
+      - test_report.xml
     expire_in: 1 month
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
+    - if: '$CI_COMMIT_BRANCH'
+
+test_frontend:
+  stage: test
+  script:
+    - npm install
+    - npm test
+  artifacts:
+    paths:
+      - frontend_test_report.html
+    expire_in: 1 month
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
+build:
+  stage: build
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
