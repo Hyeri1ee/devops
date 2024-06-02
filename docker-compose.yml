@@ -31,12 +31,13 @@ services:
       MYSQL_USER: examretake
       MYSQL_PASSWORD: Akordeon0901
       MYSQL_DATABASE: test
+      BACKEND_IP: ${INSTANCE_IP}
     ports:
       - "3000:3000"
     depends_on:
       - mysql
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/contacts"]
+      test: ["CMD", "curl", "-f", "http://${INSTANCE_IP}:3000/contacts"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -49,7 +50,7 @@ services:
     ports:
       - "8080:80"
     environment:
-      - VITE_REST_API=http://localhost:3000/contacts
+      - VITE_REST_API=http://${INSTANCE_IP}:3000/contacts
 
   seed-application:
     build:
