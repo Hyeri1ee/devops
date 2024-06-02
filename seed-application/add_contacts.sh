@@ -1,5 +1,5 @@
 #!/bin/bash
-endpoint="http://backend:3000/contacts"
+endpoint="http://{INSTANCE_IP}:3000/contacts"
 
 fullnames=()
 emails=()
