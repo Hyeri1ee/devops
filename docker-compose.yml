@@ -34,8 +34,7 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/contacts"]
       interval: 10s
@@ -56,8 +55,7 @@ services:
     build:
       context: ./seed-application
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
 
 volumes:
   mysql_data:
