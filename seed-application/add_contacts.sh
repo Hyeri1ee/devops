@@ -1,23 +1,19 @@
 #!/bin/bash
-# TODO: parse data.txt and add to database
-
-# The json format in which your need to post the data to /contacts has to look like this:
-# {
-#     "email": "example@example.com,
-#     "shortname": "abc01",
-#     "fullname": "name of person"
-# }
-#!/bin/bash
-#!/bin/bash
-
-endpoint="http://127.0.0.1:3000/contacts/"
+if [ $# -eq 1 ]; then
+  endpoint="$1"
+else
+  endpoint="http://${INSTANCE_IP}:3000/contacts"
+fi
 
 fullnames=()
 emails=()
 shortnames=()
 
-# check if database is full
-if [ "$(curl -s $endpoint)" == "[]" ]; then
+contacts_response=$(curl -s "$endpoint")
+
+echo "$contacts_response"
+
+if [[ "$contacts_response" == "[]" ]] || [[ -z "$contacts_response" ]]; then
   echo "Database is empty. Adding data..."
 else
   echo "Database is not empty. Exiting script."

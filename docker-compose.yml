@@ -1,4 +1,62 @@
-version: '3.0'
+version: '3.7'
 
 services:
-  
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: examretake
+      MYSQL_PASSWORD: Akordeon0901
+      MYSQL_DATABASE: test
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/app
+    environment:
+      RAILS_ENV: production
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_HOST: mysql
+      MYSQL_USER: examretake
+      MYSQL_PASSWORD: Akordeon0901
+      MYSQL_DATABASE: test
+      BACKEND_IP: ${INSTANCE_IP}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/contacts"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "8080:80"
+    environment:
+      - VITE_REST_API=http://${INSTANCE_IP}:3000/contacts
+
+  seed-application:
+    build:
+      context: ./seed-application
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

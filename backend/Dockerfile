@@ -1,21 +1,15 @@
-## Dockerfile
-## build and run dockerfile in retake folder (not in backend folder)
 FROM ruby:3.3.1
-RUN mkdir /myapp
-WORKDIR /myapp
 
-COPY ./backend/Gemfile /myapp/Gemfile
-COPY ./backend/Gemfile.lock /myapp/Gemfile.lock
-RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+RUN apt-get update -qq && apt-get install -y nodejs yarn mariadb-server sqlite3 libsqlite3-dev
+
+WORKDIR /app
+COPY Gemfile Gemfile.lock ./
 RUN bundle install
-COPY ./backend /myapp
 
-# Add a script to be executed every time the container starts.
-COPY ./seed-application/add_contacts.sh /usr/bin/
-RUN chmod +x /usr/bin/add_contacts.sh
-ENTRYPOINT ["/usr/bin/add_contacts.sh"]
-ENV RAILS_ENV=production
+COPY . .
+
 EXPOSE 3000
 
-# Start the main process.
-CMD ["./backend/bin/rails", "server","-b0.0.0.0"]
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 CMD curl -f http://localhost:3000/contacts || exit 1
+
+CMD ["bash", "-c", "bundle exec rake db:migrate && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"]

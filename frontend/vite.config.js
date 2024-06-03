@@ -20,7 +20,7 @@ export default defineConfig({
       },
     }),
   ],
-  define: { 'process.env': { VITE_REST_API: 'http://localhost:3000/',} },
+  define: { 'process.env': {VITE_REST_API: process.env.VITE_REST_API} },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -36,6 +36,6 @@ export default defineConfig({
     ],
   },
   server: {
-    port: 3000,
+    port: 80,
   },
 })
