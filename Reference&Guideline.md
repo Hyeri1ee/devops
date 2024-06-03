@@ -10,22 +10,23 @@
 - In add_contacts.sh, there are three empty arrays (fullnames=(),emails=(),shortnames=()) that will store parsed data in
   data.txt file. And before doing all of these procedure, it checks whether the database is empty, so if it is not empty,
   it just exits itself.
+  Hyeri
 
-## point2 , point3
+## point2 
 
-### backend
+Frontend and Backend dockerfiles were created. Backend file uses Ruby image, generates a gemfile and copies all
+the backend contents into the container. Then, sets the environment to production and exposes port 3000, while
+setting up the Ruby. Frontend dockerfile builds the application and sets up nginx proxy using ports 8080 and 80.
+dockerize script was also created, which can be ran by build, run, stop commands.
+Filip
 
-- dockerfile
+## point3
 
-### frontend
-
-- in frontend README.md, there is instruction of doing some stuff.
-    - npm install, npm run dev, npm run build
-- customize configuration
-    - changed server's port from 6000 to 3000 because backend's url is 3000
-    - set VITE_REST_API as 'http://localhost:3000/' which is related to backend url
-- dockerfile
-  
+Inside the docker-compose there is an additional volume for database created as well as for the script. The
+docker compose sets environment variables in backend and mysql for connection, and performs healthchecks for each 
+crucial container. The environment is set to production, and an additional dockerfile for seed-application is created
+for adding contacts to the database.
+Filip
 
 ## point4
 - stages : lint, test
@@ -38,12 +39,16 @@
     - tried setting .env 'MINITEST_REPORTER=HtmlReporter' but it keeps saying error like this
         - ➜  backend git:(main) ✗ ./bin/rails test
           /home/hyeri/.rbenv/versions/3.3.1/lib/ruby/3.3.0/bundled_gems.rb:74:in `require': cannot load such file -- minitest/reporters (LoadError)
+Hyeri
 
 ## point5
 - made terraform file
-- 1 vpc, 4 subnets(2 - web, 2 - was), 4 instances
-- user_data.sh : docker-compose up to run the front and backend
+- 1 vpc, t2.large instance and a launch template
+- user_data.sh : docker-compose up to download docker compose, run the whole application, make initial script for getting instance ip
+Hyeri, Filip
 
 ## point6
 
 ## point7
+Added loadbalancer, autoscaling group and s3 bucket, the deployment is automatical, no need to manually create instances
+Hyeri, Filip
