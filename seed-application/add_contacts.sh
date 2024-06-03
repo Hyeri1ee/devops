@@ -5,28 +5,6 @@ else
   endpoint="http://${INSTANCE_IP}:3000/contacts"
 fi
 
-health_check() {
-  local retries=5
-  local interval=10
-  local timeout=5
-  local success=0
-
-  for ((i=1; i<=retries; i++)); do
-    if curl -s -o /dev/null --max-time "$timeout" -f "$endpoint"; then
-      success=1
-      break
-    else
-      sleep "$interval"
-    fi
-  done
-
-  if [[ $success -ne 1 ]]; then
-    exit 1
-  fi
-}
-
-health_check
-
 fullnames=()
 emails=()
 shortnames=()
