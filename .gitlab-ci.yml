@@ -38,7 +38,6 @@ lint-frontend:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
 
-
 lint-backend:
   stage: lint
   extends: .setup-backend
@@ -55,7 +54,6 @@ lint-backend:
     expire_in: 1 month
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
-
 
 unit-tests:
   stage: test
