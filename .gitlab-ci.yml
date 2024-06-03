@@ -82,12 +82,7 @@ deploy:
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
-        docker pull $DOCKER_IMAGE:$CI_COMMIT_SHA
-        docker stop backend || true
-        docker rm backend || true
-        docker run -d --name backend -p 3000:3000 $DOCKER_IMAGE:$CI_COMMIT_SHA
-      EOF
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"
 
