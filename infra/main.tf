@@ -151,7 +151,7 @@ resource "aws_launch_configuration" "searchapp_lc" {
 
 resource "aws_autoscaling_group" "searchapp_asg" {
   desired_capacity     = 2
-  max_size             = 3
+  max_size             = 4
   min_size             = 1
   vpc_zone_identifier  = [aws_subnet.SearchAppSubnet1.id, aws_subnet.SearchAppSubnet2.id]
   launch_configuration = aws_launch_configuration.searchapp_lc.name
